@@ -1,0 +1,63 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+*.pyd
+*.pdb
+
+# Environments
+.env
+.venv/
+venv/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Logs
+logs/
+*.log
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Data/artifacts
+/data/
+outputs/
+checkpoints/
+
+# Cache
+.cache/
+.mypy_cache/
+.pytest_cache/
+
+# Images/Audio large raw data (pattern)
+*.wav
+*.mp3
+*.flac
+*.png
+*.jpg
+*.jpeg
+*.gif
+
+# Notebook outputs
+*.nbconvert.ipynb
+
+# Others
+Old/
