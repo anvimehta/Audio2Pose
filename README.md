@@ -30,5 +30,19 @@ from src.data.loader import load_single_sample
 pose, (wav, sr) = load_single_sample("<file_id>", data_root="data/raw/aistpp_hiphop")
 ```
 
+### Extract 3D poses from PKL to NPY
+- Extract all PKLs in a folder to NPYs (skips existing files):
+
+```bash
+python scripts/extract_all_poses.py "data/hiphop_la/pkl" "data/hiphop_la/poses_npy"
+```
+
+- Programmatic single-file extraction:
+
+```python
+from src.data.extract import extract_poses
+out = extract_poses("data/hiphop_la/pkl/<file>.pkl", "data/hiphop_la/poses_npy")
+```
+
 ## License
 Add a license if applicable.
