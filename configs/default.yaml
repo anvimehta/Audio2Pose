@@ -1,0 +1,7 @@
+# Default config placeholder
+seed: 42
+fps: 30
+paths:
+  data_root: data
+  features_dir: data/features
+  processed_dir: data/processed
