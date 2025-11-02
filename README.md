@@ -7,41 +7,36 @@ Machine Learning project scaffold. Initialize repo and push to GitHub.
 - Add project code under appropriate folders.
 
 ## AIST++ Dataset Setup
-1. Download AIST++ from the official sources (`aistplusplus-api` and the 3D keypoints/SMPL assets). Place audio and 3D keypoints locally.
-2. Organize files under this repository:
 
-```
-data/
-  raw/
-    aistpp_3d/
+### Download LA Hip-Hop Videos
+```bash
+python scripts/download_aist.py --download_folder data/raw/aistpp_hiphop_la --num_processes 4
 ```
 
-- If your files live elsewhere, pass the root to loaders via `data_root`.
-- To inspect a 3D keypoints pickle and visualize the first frame:
+### Preprocess Dataset
+Run the consolidated preprocessing script to filter PKLs, extract poses, and extract/copy audio:
 
 ```bash
-python scripts/inspect_pkl.py data/aistpp_3d/<your_file>.pkl
+python scripts/preprocess.py \
+  --pkl_dir data/aistpp_3d \
+  --video_dir data/raw/aistpp_hiphop_la \
+  --output_dir data/hiphop_la
 ```
 
-- To load a single sample programmatically:
+This creates:
+- `data/hiphop_la/pkl/` - Filtered LA Hip-Hop PKL files
+- `data/hiphop_la/poses_npy/` - Extracted 3D pose arrays (.npy)
+- `data/hiphop_la/audio/` - Matching audio WAV files (16kHz mono)
 
+### Inspect Data
+```bash
+python scripts/inspect_pkl.py data/hiphop_la/pkl/<file>.pkl
+```
+
+### Load Data Programmatically
 ```python
 from src.data.loader import load_single_sample
-pose, (wav, sr) = load_single_sample("<file_id>", data_root="data/raw/aistpp_hiphop")
-```
-
-### Extract 3D poses from PKL to NPY
-- Extract all PKLs in a folder to NPYs (skips existing files):
-
-```bash
-python scripts/extract_all_poses.py "data/hiphop_la/pkl" "data/hiphop_la/poses_npy"
-```
-
-- Programmatic single-file extraction:
-
-```python
-from src.data.extract import extract_poses
-out = extract_poses("data/hiphop_la/pkl/<file>.pkl", "data/hiphop_la/poses_npy")
+pose, (wav, sr) = load_single_sample("<file_id>", data_root="data/hiphop_la")
 ```
 
 ## License
