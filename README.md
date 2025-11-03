@@ -1,10 +1,9 @@
 # Audio2Pose
 
-Machine Learning project scaffold. Initialize repo and push to GitHub.
+Dance is considered one of the world’s earliest art forms, a universal language with which cultures have long communicated, told stories, and passed down traditions even before language was created. Because of its nature as a physical form of expression, dance is often challenging to explain verbally and even more difficult to translate into data. This project proposes to develop a machine learning model capable of generating 3D dance sequences conditioned on musical input. The system will take an audio track as input and output a temporally aligned, smooth 3D rendering of a dancer performing movements appropriate to the song’s rhythm and style.
 
 ## Getting Started
 - Create a virtual environment and install your dependencies.
-- Add project code under appropriate folders.
 
 ## AIST++ Dataset Setup
 
@@ -147,6 +146,3 @@ with open(beats_file) as f:
 print(f"Tempo: {beats_data['tempo_bpm']} BPM")
 print(f"Beat times: {beats_data['beat_times'][:5]}")  # First 5 beats in seconds
 ```
-
-## License
-Add a license if applicable.
