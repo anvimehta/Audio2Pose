@@ -124,8 +124,8 @@ def main() -> None:
     args = parser.parse_args()
 
     out_dir = args.output_dir
-    pkl_dir = out_dir / "pkl"
-    poses_dir = out_dir / "poses_npy"
+    pkl_dir = out_dir / "3d_pkl"
+    poses_dir = out_dir / "3d_npy"
     audio_dir = out_dir / "audio"
     beats_dir = out_dir / "beats"
     pkl_dir.mkdir(parents=True, exist_ok=True)
