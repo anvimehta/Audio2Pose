@@ -1,6 +1,7 @@
 #!/usr/bin/env python
-"""Preprocess AIST++ LA Hip-Hop dataset: filter PKLs, extract poses, extract audio, copy matching files."""
+"""Preprocess AIST++ LA Hip-Hop dataset: filter PKLs, extract poses, extract audio, extract beats/tempo, copy matching files."""
 import argparse
+import json
 import pickle
 import shutil
 import subprocess
@@ -8,6 +9,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import numpy as np
 from tqdm import tqdm
 
 
@@ -75,6 +77,41 @@ def infer_audio_from_name(pkl_path: Path, audio_root: Path | None) -> Path | Non
     return None
 
 
+def extract_beats_tempo(audio_path: Path, output_path: Path, sr: int = 16000) -> bool:
+    """Extract beat frames and tempo from audio using librosa."""
+    try:
+        import librosa
+    except ImportError:
+        print("Warning: librosa not available. Skipping beat/tempo extraction.")
+        return False
+    
+    try:
+        # Load audio
+        y, sr_actual = librosa.load(str(audio_path), sr=sr, mono=True)
+        
+        # Extract tempo and beat frames
+        tempo, beats = librosa.beat.beat_track(y=y, sr=sr)
+        
+        # Convert beat frames to timestamps (in seconds)
+        beat_times = librosa.frames_to_time(beats, sr=sr)
+        
+        # Save as JSON with tempo (BPM) and beat timestamps
+        data = {
+            "tempo_bpm": float(tempo),
+            "beat_times": beat_times.tolist(),  # Convert numpy array to list
+            "beat_frames": beats.tolist(),
+            "sample_rate": int(sr),
+        }
+        
+        with open(output_path, "w") as f:
+            json.dump(data, f, indent=2)
+        
+        return output_path.exists() and output_path.stat().st_size > 0
+    except Exception as e:
+        print(f"Failed to extract beats from {audio_path.name}: {e}")
+        return False
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Preprocess AIST++ LA Hip-Hop dataset")
     parser.add_argument("--pkl_dir", type=Path, help="Directory with all PKL files")
@@ -82,6 +119,7 @@ def main() -> None:
     parser.add_argument("--output_dir", type=Path, default=Path("data/hiphop_la"), help="Output directory")
     parser.add_argument("--skip_poses", action="store_true", help="Skip pose extraction")
     parser.add_argument("--skip_audio", action="store_true", help="Skip audio extraction")
+    parser.add_argument("--skip_beats", action="store_true", help="Skip beat/tempo extraction")
     parser.add_argument("--overwrite", action="store_true", help="Overwrite existing files")
     args = parser.parse_args()
 
@@ -89,9 +127,11 @@ def main() -> None:
     pkl_dir = out_dir / "pkl"
     poses_dir = out_dir / "poses_npy"
     audio_dir = out_dir / "audio"
+    beats_dir = out_dir / "beats"
     pkl_dir.mkdir(parents=True, exist_ok=True)
     poses_dir.mkdir(parents=True, exist_ok=True)
     audio_dir.mkdir(parents=True, exist_ok=True)
+    beats_dir.mkdir(parents=True, exist_ok=True)
 
     if args.pkl_dir:
         print("Filtering LA Hip-Hop PKLs...")
@@ -152,6 +192,19 @@ def main() -> None:
                     shutil.copy2(src_audio, dst_audio)
                 copied += 1
         print(f"Copied {copied}/{len(pkls)} audio files")
+
+    # Extract beat/tempo annotations from audio files
+    if not args.skip_beats:
+        print("\nExtracting beat/tempo annotations...")
+        audio_files = sorted(audio_dir.glob("*.wav"))
+        extracted = 0
+        for audio_path in tqdm(audio_files, desc="Extracting beats"):
+            beats_output = beats_dir / f"{audio_path.stem}.json"
+            if beats_output.exists() and not args.overwrite:
+                continue
+            if extract_beats_tempo(audio_path, beats_output):
+                extracted += 1
+        print(f"Extracted {extracted}/{len(audio_files)} beat/tempo annotations")
 
     print(f"\nPreprocessing complete! Output in {out_dir}")
 
