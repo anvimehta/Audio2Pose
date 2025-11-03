@@ -72,10 +72,6 @@ This downloads LA Hip-Hop videos (files starting with `gLH_`) into `data/raw/ais
 
 **Important:** Only LA Hip-Hop PKL files (starting with `gLH_`) should be placed in `data/hiphop_la/pkl/`. If you download the full AIST++ dataset with all genres, filter only the LA Hip-Hop files.
 
-**If PKL files are already available:**
-- If your team already has the LA Hip-Hop PKL files, place them directly in `data/hiphop_la/pkl/`
-- The preprocessing script will use them from there
-
 ### Step 3: Preprocess Dataset
 
 Run the consolidated preprocessing script to:
