@@ -1,0 +1,12 @@
+numpy>=1.24
+scipy>=1.10
+pandas>=2.0
+matplotlib>=3.7
+tqdm>=4.66
+PyYAML>=6.0
+soundfile>=0.12
+librosa>=0.10.1
+torch>=2.2
+torchaudio>=2.2
+opencv-python>=4.8
+

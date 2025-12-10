@@ -30,6 +30,7 @@ dist/
 # Logs
 logs/
 *.log
+batch_processing.log
 
 # IDE/Editor
 .vscode/
@@ -39,7 +40,10 @@ logs/
 
 # Data/artifacts
 /data/
-outputs/
+/outputs/
+/output/
+output/
+experiments/
 checkpoints/
 
 # Cache
@@ -55,6 +59,14 @@ checkpoints/
 *.jpg
 *.jpeg
 *.gif
+
+# Video outputs
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.temp.mp4
+*_skeleton.mp4
 
 # Notebook outputs
 *.nbconvert.ipynb
