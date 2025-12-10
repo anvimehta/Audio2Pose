@@ -1,3 +1,4 @@
+# Note: Requires Python 3.8-3.12 (Python 3.13 not yet supported by PyTorch)
 numpy>=1.24
 scipy>=1.10
 pandas>=2.0
@@ -6,7 +7,9 @@ tqdm>=4.66
 PyYAML>=6.0
 soundfile>=0.12
 librosa>=0.10.1
-torch>=2.2
-torchaudio>=2.2
+# PyTorch - check https://pytorch.org/get-started/locally/ for your system
+torch>=2.0.0,<2.5.0
+torchaudio>=2.0.0,<2.5.0
 opencv-python>=4.8
+xgboost>=2.0
 
